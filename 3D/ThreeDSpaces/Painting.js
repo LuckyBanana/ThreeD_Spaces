@@ -1,17 +1,13 @@
-/**
- * Scuptures & Painting generation
- * @param {[type]} data [description]
- * @param {[type]} r    [description]
- */
-ThreeDSpaces.Model =  function(data, r) {
+ThreeDSpaces.Painting =  function(data, r) {
 
 	if(data === undefined)
 		return;
 
 	var posX = data.posX;
+	var posY = data.posY;
 	var posZ = data.posZ;
+	var angle = data.angle;
 
-	//var model = 'assets/models/'+data.model;
 	var model = data.model;
 	var object;
 
@@ -27,7 +23,7 @@ ThreeDSpaces.Model =  function(data, r) {
             object.scale.x = object.scale.y = object.scale.z =  1;
             object.updateMatrix();
             object.rotation.x = -Math.PI / 2;
-            object.position.y = r;
+            object.position.y = r+posY;
             object.position.z = posZ;
             object.position.x = posX;
             object.receiveShadow = true;

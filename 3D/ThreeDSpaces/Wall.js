@@ -2,10 +2,11 @@
  * [Wall description]
  * @param {[type]} data [description]
  */
-ThreeDSpaces.Wall = function (data) {
+ThreeDSpaces.Wall = function (data, r) {
 	if(data === undefined)
 		return;
 
+	console.log(data);
 	/**
 	 * rawObject: THREE.Mesh
 	 * physiObject: Physijs.BoxMesh
@@ -30,13 +31,12 @@ ThreeDSpaces.Wall = function (data) {
 
 	var rawDoors = data.doors;
 	var rawWindows = data.windows;
-	var rawPaintings = data.paintings;
 
 	/**
 	 * [generate description]
 	 * @return {[type]} [description]
 	 */
-	this.generate = function() {
+	this.generate = function(r) {
 		wall_texture = new THREE.ImageUtils.loadTexture(texture);
         wall_material = new THREE.MeshBasicMaterial({color: 0xffffff, map: wall_texture});
 		
@@ -51,14 +51,15 @@ ThreeDSpaces.Wall = function (data) {
 
 		rawObject = basic_wall_mesh;
 
-		this.generate_doors(rawDoors);
+		//this.generate_doors(rawDoors);
 		this.generate_windows(rawWindows);
-		this.generate_paintings(rawPaintings);
 
 		var wall_mesh = new Physijs.BoxMesh(currentGeometry, wall_material, 0);
 		wall_mesh.position.x = posX;
 		wall_mesh.position.z = posZ;
 		wall_mesh.rotation.y = angle;
+		wall_mesh.position.y = r + height/2;
+		//wall_mesh.castShadow = true;
 		physiObject = wall_mesh;
 		
 	}
@@ -69,14 +70,19 @@ ThreeDSpaces.Wall = function (data) {
 	 * @return {[type]}       [description]
 	 */
 	this.generate_doors = function(doors) {
+
+		console.log(doors);
+
 		for(var i = 0; i < rawDoors.length; i++) {
+
+			console.log(rawDoors[i]);
 			
 			door_geometry 
 				= new THREE.CubeGeometry(rawDoors[i].width, rawDoors[i].height, rawObject.position.z);
 			door_material = new THREE.MeshBasicMaterial({color: 0xffffff});
 			door_mesh = new THREE.Mesh(door_geometry, wall_material);
 			door_mesh.position.x = rawDoors[i].posX;
-			//door_mesh.position.y = rawObject.y;
+			door_mesh.position.y = -(height - rawDoors[i].height)/2;
 			door_mesh.position.z = rawDoors[i].posZ;
 			door_mesh.rotation.y = angle;
 
@@ -129,8 +135,12 @@ ThreeDSpaces.Wall = function (data) {
 
 
 	this.addToScene = function(scene) {
-		scene.add(physiObject);
+		scene.add(rawObject);
 	}
 
-	this.generate();
+	this._object = function() {
+		return physiObject;
+	}
+
+	this.generate(r);
 }

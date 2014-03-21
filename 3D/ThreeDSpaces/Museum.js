@@ -1,20 +1,19 @@
-var ThreeDSpaces = { rev: '0.1' }; 
+var ThreeDSpaces = { rev: '1' }; 
 
 ThreeDSpaces.Museum = function(data) {
 
 	if(data === undefined)
 		return;
 
-	console.log("museum");
-	console.log(data.name);
-	console.log(data.floors);
-
 	var rawFloors = data.floors;
 	var floors = [];
+	var objects = [];
+
+	console.log(data);
+	console.log(rawFloors);
 
 	this.generate = function() {
 		for(var i = 0; i < rawFloors.length; i++) {
-			console.log(rawFloors[i]);
 			floors.push(new ThreeDSpaces.Floor(rawFloors[i]));
 		}
 	}
@@ -23,6 +22,13 @@ ThreeDSpaces.Museum = function(data) {
 		for(var i = 0; i < floors.length; i++) {
 			floors[i].addToScene(scene);
 		}
+	}
+
+	this.toObjects = function() {
+		for(var i = 0; i < floors.length; i++) {
+			objects = objects.concat(floors[i].toObjects());
+		}
+		return objects;
 	}
 
 	this.generate();
