@@ -1,0 +1,10 @@
+[
+	{
+		"name": "Chaise",
+		"path": "assets/models/chaise.dae"
+	},
+	{
+		"name": "Table",
+		"path": "assets/models/table.dae"
+	}
+]
